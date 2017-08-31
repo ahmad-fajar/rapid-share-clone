@@ -60,10 +60,31 @@ var deleteFile = function(req, res){
   })
 }
 
+var saveCloudDataToDB = (req, res, next) => {
+  let data = req.body;
+  if (req.file && req.file.cloudStoragePublicUrl) {
+    data.fileName = req.file.originalname
+    data.url = req.file.cloudStoragePublicUrl;
+  }
+
+  db = new fileModel()
+  db.fileName = data.fileName
+  db.url = data.url
+  db.save(function(err){
+    if(!err){
+      res.send('saved')
+      
+    }
+    else {
+      res.send(err)
+    }
+  })
+}
 
 module.exports = {
   createFile,
   readFile,
   updateFile,
-  deleteFile
+  deleteFile,
+  saveCloudDataToDB
 }
