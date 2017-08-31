@@ -72,8 +72,12 @@ var saveCloudDataToDB = (req, res, next) => {
   db.url = data.url
   db.save(function(err){
     if(!err){
-      res.send('saved')
-      
+      // res.send('saved')
+      res.send({
+        namefile: data.fileName,
+        url: data.url
+      })
+
     }
     else {
       res.send(err)
