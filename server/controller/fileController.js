@@ -62,18 +62,21 @@ var deleteFile = function(req, res){
 
 var saveCloudDataToDB = (req, res, next) => {
   let data = req.body;
+  console.log(req.file);
   if (req.file && req.file.cloudStoragePublicUrl) {
     data.fileName = req.file.originalname
     data.url = req.file.cloudStoragePublicUrl;
   }
+
+  console.log(data.fileName)
 
   db = new fileModel()
   db.fileName = data.fileName
   db.url = data.url
   db.save(function(err){
     if(!err){
+      // res.send(r)
       res.send('saved')
-      
     }
     else {
       res.send(err)

@@ -44,19 +44,24 @@ const app = new Vue({
 
     // upload data to the server
     save(formData) {
+      console.log('save')
+      console.log('form data', formData)
       this.currentStatus = STATUS_SAVING;
-      // const url = `${BASE_URL}/photos/upload`;
-      upload(formData)
-      axios.
-        .then(wait(1500)) // DEV ONLY: wait for 1.5s
-        .then(x => {
-          this.uploadedFiles = [].concat(x);
-          this.currentStatus = STATUS_SUCCESS;
-        })
-        .catch(err => {
-          this.uploadError = err.response;
-          this.currentStatus = STATUS_FAILED;
-        });
+
+      axios.post('http://localhost:3000/files/add', {
+        data: {
+          image: formData
+        }
+      })
+      .then(up => {
+        console.log('up', up)
+        this.currentStatus = STATUS_SUCCESS
+      })
+      .catch(e => {
+        console.log(e.response.data)
+        this.currentStatus = STATUS_FAILED
+      })
+
     },  // save()
 
     filesChange(fieldName, fileList) {
@@ -70,6 +75,7 @@ const app = new Vue({
           formData.append(fieldName, fileList[x], fileList[x].name);
         });
       // save it
+      // console.log('form data', formData)
       this.save(formData);
     }  // filesChange()
 
