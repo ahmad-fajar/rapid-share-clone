@@ -8,8 +8,8 @@ var cors = require('cors');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-// var files = require('./routes/file');
-var upload = require('./routes/uploader');
+var files = require('./routes/file');
+// var upload = require('./routes/uploader');
 
 var app = express();
 
@@ -32,8 +32,8 @@ app.use(cors())
 
 app.use('/', index);
 app.use('/users', users);
-// app.use('/files', files);
-app.use('/upload', upload)
+app.use('/files', files);
+// app.use('/upload', upload)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
