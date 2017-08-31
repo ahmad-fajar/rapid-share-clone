@@ -3,6 +3,8 @@ var router = express.Router();
 var controller = require('../controller/fileController')
 //var upload = require('../controller/upload')
 var images = require('../helper/image')
+var fileDB = require('../routes/file')
+
 
 router.get('/', controller.readFile);
 router.post('/', controller.createFile);
@@ -15,7 +17,7 @@ router.post(
   images.sendUploadToGCS,
   (req, res, next) => {
     console.log('sukses');
-    res.send(req.file.cloudStoragePublicUrl)
+    res.send({name: req.file.originalname, url: req.file.cloudStoragePublicUrl})
     // let data = req.body;
     //
     // // Was an image uploaded? If so, we'll use its public URL

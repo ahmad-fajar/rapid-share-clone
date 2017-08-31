@@ -23,6 +23,7 @@ function sendUploadToGCS (req, res, next) {
   }
 
   const gcsname = Date.now() + req.file.originalname;
+  console.log("====>",gcsname);
   const file = bucket.file(gcsname);
 
   const stream = file.createWriteStream({
@@ -38,8 +39,11 @@ function sendUploadToGCS (req, res, next) {
 
   stream.on('finish', () => {
     req.file.cloudStorageObject = gcsname;
-    req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-    next();
+    file.makePublic()
+    .then(()=>{
+      req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+      next();
+    })
   });
 
   stream.end(req.file.buffer);
