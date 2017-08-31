@@ -7,7 +7,7 @@
 
   <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  
+
   <!-- bootstrap -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -60,7 +60,7 @@
                   </li>
                 </ul>
               </div>
-              
+
               <!--FAILED-->
               <div v-if="isFailed">
                 <h2>Uploaded failed.</h2>
@@ -74,6 +74,27 @@
           </div>
         </div>
 
+        <!-- list file hasil upload -->
+        <div class="container">
+          <h2>Striped Rows</h2>
+          <p>The .table-striped class adds zebra-stripes to a table:</p>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Filename</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(file, idx) in files">
+                <td> {{idx + 1}} </td>
+                <td> <a v-bind:href="file.url">{{file.fileName}}</a> </td>
+                <td><a href="#" @click.prevent="deleteFile(idx)">Delete</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
 
       </div>
