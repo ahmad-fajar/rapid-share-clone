@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Template upload</title>
+
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+  <!-- bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+  <!-- styles -->
+  <link href="./css/style.css" rel="stylesheet" type="text/css" />
+
+  <!-- vue dan axios-->
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+
+
+    <div class="container"> <br />
+      <div class="row">
+
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading"><strong>Upload files</strong> <small> </small></div>
+            <div class="panel-body">
+
+              <!-- Drop Zone -->
+              <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+                <h1>Upload images</h1>
+                <div class="dropbox">
+                  <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files);"
+                    accept="image/*" class="input-file">
+                  <p v-if="isInitial">
+                    Drag your file(s) here to begin<br> or click to browse
+                  </p>
+                  <p v-if="isSaving">
+                    Uploading files...
+                  </p>
+                </div>
+              </form>
+
+              <!--SUCCESS-->
+              <div v-if="isSuccess">
+                <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
+                <p>
+                  <a href="javascript:void(0)" @click="reset()">Upload again</a>
+                </p>
+                <ul class="list-unstyled">
+                  <li v-for="item in uploadedFiles">
+                    <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
+                  </li>
+                </ul>
+              </div>
+
+              <!--FAILED-->
+              <div v-if="isFailed">
+                <h2>Uploaded failed.</h2>
+                <p>
+                  <a href="javascript:void(0)" @click="reset()">Try again</a>
+                </p>
+                <pre>{{ uploadError }}</pre>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+
+
+    <!-- /container -->
+
+  </div>
+
+  <script src="./controller/app.js"></script>
+</body>
+
+</html>
