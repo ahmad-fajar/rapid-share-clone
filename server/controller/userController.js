@@ -6,28 +6,83 @@ const jwt    = require('jsonwebtoken');
 const keygen = require('../helper/keygen');
 
 
+
+// var createUser = (req, res) => {
+//   // console.log(req.body);
+//   let salt = keygen()
+//   let hashed = crypt(req.body.password, salt)
+
+//   let userdata = {
+//     username: req.body.username,
+//     password: hashed,
+//     salt: salt
+//   }
+
+//   userModel.create(userdata)
+//     .then(user => {
+//       // console.log(user)
+//       let wrap = {
+//         id: user._id,
+//         username: user.username
+//       }
+//       let token = jwt.sign(wrap, 'rapid')
+//       res.send({ username: user.username, rapidToken: token })
+//     })
+//     .catch(e => { console.log(e); res.send(e) })
+// }  // end of createUser
+
+
+
+
+
 var createUser = (req, res) => {
   // console.log(req.body);
-  let salt   = keygen()
-  let hashed = crypt(req.body.password, salt)
 
-  let userdata = {
-    username  : req.body.username,
-    password  : hashed,
-    salt      : salt
-  }
-
-  userModel.create(userdata)
-  .then(user => {
-    // console.log(user)
-    let wrap = {
-      id       : user._id,
-      username : user.username
-    }
-    let token = jwt.sign(wrap, 'rapid')
-    res.send({username: user.username, rapidToken: token})
+  userModel.findOne({
+    username : req.body.username
   })
-  .catch(e => {console.log(e);res.send(e)})
+  .then(found => {
+    
+    if (!found) {
+      let salt = keygen()
+      let hashed = crypt(req.body.password, salt)
+
+      let userdata = {
+        username: req.body.username,
+        password: hashed,
+        salt: salt
+      }
+
+      userModel.create(userdata)
+      .then(user => {
+        let wrap = {
+          id: user._id,
+          username: user.username
+        }
+        let token = jwt.sign(wrap, 'rapid')
+        res.send({ username: user.username, rapidToken: token })
+      })
+    } else {
+      console.log(found)
+      let hashed = crypt(req.body.password, found.salt)
+      console.log(hashed === found.password)
+      if (found.password === hashed) {
+        console.log('cocok')
+        let wrap = {
+          id       : found._id,
+          username : fond.username
+        }
+        let token = jwt.sign(wrap, 'rapid')
+        res.send({ username: user.username, rapidToken: token })
+      } else {
+        console.log('Wrong username or password')
+        res.send('wrong')
+      }
+    }
+
+
+  })
+
 }  // end of createUser
 
 
