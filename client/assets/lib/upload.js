@@ -40,14 +40,14 @@ const app = new Vue({
 
     getAllFile () {
       let self = this
-      axios.get('http://localhost:3000/files')
+      axios.get(`${BASE_URL}/files`)
       .then(response => {
         self.files = response.data
       })
     }, // getAllFile()
 
     deleteFile (id) {
-      axios.delete(`http://localhost:3000/files/${id}`)
+      axios.delete(`${BASE_URL}/files/${id}`)
       .then(r => {
         this.files.splice(id, 1)
       })
@@ -65,7 +65,7 @@ const app = new Vue({
       console.log('form data', formData)
       this.currentStatus = STATUS_SAVING;
 
-      axios.post('http://localhost:3000/files/add', formData)
+      axios.post(`${BASE_URL}/files/add`, formData)
       .then(up => {
         // console.log('up', up)
         this.uploadedFiles = [].concat(up)

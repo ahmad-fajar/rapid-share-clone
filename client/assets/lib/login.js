@@ -1,5 +1,7 @@
 'use strict'
 
+let BASE_URL = 'http;//localhost:3000'
+
 const app = new Vue({
   el: '#app',
   data: {
@@ -11,7 +13,7 @@ const app = new Vue({
   methods: {
     login () {
       const a = this;
-      axios.post('http://localhost:3000/users', {
+      axios.post(`${BASE_URL}/users`, {
         username: a.username,
         password: a.password
       })
