@@ -6,9 +6,8 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
   username: String,
   password: String,
-  email: String,
-  salt: String,
-  createdAt: Date
+  // email: String,
+  salt: String
 });
 
 var userModels = mongoose.model('User', UserSchema);

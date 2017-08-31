@@ -1,23 +1,34 @@
 var userModel = require('../models/userModel')
 
-var createUser = function(req, res){
-  user = new userModel();
-  user.username = req.body.username
-  user.password = req.body.password
-  user.email = req.body.email
-  user.createdAt = new Date();
-  user.updatedAt = new Date()
+// buat bikin user baru, otentifikasi, dan otorisasi
+const crypt  = require('../helper/crypt');
+const jwt    = require('jsonwebtoken');
+const keygen = require('../helper/keygen');
 
 
-  user.save(function(err){
-    if(!err){
-      res.send(user)
+var createUser = (req, res) => {
+  // console.log(req.body);
+  let salt   = keygen()
+  let hashed = crypt(req.body.password, salt)
+
+  let userdata = {
+    username  : req.body.username,
+    password  : hashed,
+    salt      : salt
+  }
+
+  userModel.create(userdata)
+  .then(user => {
+    // console.log(user)
+    let wrap = {
+      id       : user._id,
+      username : user.username
     }
-    else {
-      res.send(err)
-    }
+    let token = jwt.sign(wrap, 'rapid')
+    res.send({username: user.username, rapidToken: token})
   })
-}
+  .catch(e => {console.log(e);res.send(e)})
+}  // end of createUser
 
 
 var readUser = function(req, res){

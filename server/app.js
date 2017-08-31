@@ -16,6 +16,7 @@ var app = express();
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://group5:hacktiv8@cluster0-shard-00-00-wlsqh.mongodb.net:27017,cluster0-shard-00-01-wlsqh.mongodb.net:27017,cluster0-shard-00-02-wlsqh.mongodb.net:27017/rapid-share-clone?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
